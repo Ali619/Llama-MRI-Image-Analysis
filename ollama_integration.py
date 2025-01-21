@@ -47,25 +47,22 @@ def analyze_image_with_ollama(image_base64, prompt):
         response.raise_for_status()  # Raise an exception for bad status codes
 
         # Handle streaming response
-        full_response = ""
+        # analysis_result = ""
         for line in response.iter_lines():
             if line:
                 json_response = json.loads(line)
                 if "response" in json_response:
-                    full_response += json_response["response"]
+                    # analysis_result += json_response["response"]
+                    yield json_response["response"]  # ارسال داده به‌صورت استریم
 
-                # Check if this is the last message
                 if json_response.get("done", False):
                     break
-
-        return {"analysis": full_response}
-
     except requests.exceptions.RequestException as e:
-        return {"error": f"API Request Error: {str(e)}"}
+        yield f"API Request Error: {str(e)}"
     except json.JSONDecodeError as e:
-        return {"error": f"JSON Decode Error: {str(e)}"}
+        yield f"JSON Decode Error: {str(e)}"
     except Exception as e:
-        return {"error": f"Unexpected Error: {str(e)}"}
+        yield f"Unexpected Error: {str(e)}"
 
 
 # Image processing functions
@@ -167,14 +164,19 @@ def main():
 
         if st.button("Analyze Image"):
             with st.spinner("Analyzing image..."):
-                result = analyze_image_with_ollama(img_base64, prompts[analysis_type])
+                result_placeholder = st.empty()  # ایجاد یک محل برای نمایش خروجی لحظه‌ای
+                full_response = ""
 
-                # Display results
-                st.subheader("Analysis Results")
-                st.write(result)
+                for chunk in analyze_image_with_ollama(
+                    img_base64, prompts[analysis_type]
+                ):
+                    if chunk:
+                        full_response += chunk
+                        result_placeholder.markdown(
+                            full_response
+                        )  # به‌روزرسانی خروجی به صورت زنده
 
-                # Save to database
-                save_analysis_result(uploaded_file.name, analysis_type, result)
+                st.success("Analysis Complete!")
 
         # Show history
         st.subheader("Analysis History")
