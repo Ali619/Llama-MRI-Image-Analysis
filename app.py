@@ -8,7 +8,6 @@ from io import BytesIO
 
 import cv2
 import numpy as np
-import pandas as pd
 import pydicom
 import requests
 from flask import Flask, jsonify, request
@@ -120,10 +119,10 @@ def analyze():
     img_base64 = base64.b64encode(img_bytes.getvalue()).decode("utf-8")
 
     prompts = {
-        "General_Description": "Provide a detailed description of this MRI image.",
-        "Anomaly_Detection": "Identify potential anomalies in this MRI image.",
-        "Segmentation": "Describe the different segments visible in this MRI image.",
-        "Condition_Identification": "Identify potential medical conditions present in this MRI image.",
+        "General_Description": "Summarize the purpose of analyzing this MRI image, provide a brief description of its key features, analyze the content, and conclude with a short summary of the findings.",
+        "Anomaly_Detection": "Summarize the goal of detecting anomalies in this MRI image, briefly analyze potential irregularities, and provide a concise summary of detected anomalies.",
+        "Segmentation": "Summarize the segmentation process for this MRI image, briefly analyze the different segments, and conclude with a short summary of the segmented areas.",
+        "Condition_Identification": "Summarize the objective of identifying medical conditions in this MRI image, briefly analyze potential conditions, and provide a concise summary of the findings.",
     }
 
     if analysis_type not in prompts:
