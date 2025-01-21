@@ -118,11 +118,17 @@ def analyze():
     Image.fromarray(image_data).save(img_bytes, format="PNG")
     img_base64 = base64.b64encode(img_bytes.getvalue()).decode("utf-8")
 
+    # prompts = {
+    #     "General_Description": "Summarize the purpose of analyzing this MRI image, provide a brief description of its key features, analyze the content, and conclude with a short summary of the findings.",
+    #     "Anomaly_Detection": "Summarize the goal of detecting anomalies in this MRI image, briefly analyze potential irregularities, and provide a concise summary of detected anomalies.",
+    #     "Segmentation": "Summarize the segmentation process for this MRI image, briefly analyze the different segments, and conclude with a short summary of the segmented areas.",
+    #     "Condition_Identification": "Summarize the objective of identifying medical conditions in this MRI image, briefly analyze potential conditions, and provide a concise summary of the findings.",
+    # }
     prompts = {
-        "General_Description": "Summarize the purpose of analyzing this MRI image, provide a brief description of its key features, analyze the content, and conclude with a short summary of the findings.",
-        "Anomaly_Detection": "Summarize the goal of detecting anomalies in this MRI image, briefly analyze potential irregularities, and provide a concise summary of detected anomalies.",
-        "Segmentation": "Summarize the segmentation process for this MRI image, briefly analyze the different segments, and conclude with a short summary of the segmented areas.",
-        "Condition_Identification": "Summarize the objective of identifying medical conditions in this MRI image, briefly analyze potential conditions, and provide a concise summary of the findings.",
+        "General_Description": "هدف از تحلیل این تصویر MRI را به‌طور خلاصه بیان کنید، ویژگی‌های کلیدی آن را به‌اختصار شرح دهید، محتوای تصویر را تجزیه‌وتحلیل کنید و در پایان، خلاصه‌ای از یافته‌ها ارائه دهید.",
+        "Anomaly_Detection": "هدف از شناسایی ناهنجاری‌ها در این تصویر MRI را به‌طور خلاصه توضیح دهید، ناهنجاری‌های احتمالی را تجزیه‌وتحلیل کنید و در نهایت، خلاصه‌ای مختصر از ناهنجاری‌های شناسایی‌شده ارائه نمایید.",
+        "Segmentation": "فرآیند بخش‌بندی در این تصویر MRI را به‌طور خلاصه توضیح دهید، بخش‌های مختلف تصویر را مورد تجزیه‌وتحلیل قرار دهید و در پایان، خلاصه‌ای از نواحی بخش‌بندی‌شده ارائه دهید.",
+        "Condition_Identification": "هدف از شناسایی وضعیت‌های پزشکی در این تصویر MRI را به‌طور خلاصه بیان کنید، شرایط احتمالی موجود را تجزیه‌وتحلیل کنید و در نهایت، خلاصه‌ای از یافته‌های شناسایی‌شده ارائه دهید.",
     }
 
     if analysis_type not in prompts:
