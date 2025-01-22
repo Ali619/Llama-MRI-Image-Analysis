@@ -170,7 +170,7 @@ def main():
 
         if st.button("Analyze Image"):
             with st.spinner("Analyzing image..."):
-                result_placeholder = st.empty()  # ایجاد یک محل برای نمایش خروجی لحظه‌ای
+                result_placeholder = st.empty()  # Create a placeholder for live updates
                 full_response = ""
 
                 for chunk in analyze_image_with_ollama(
@@ -178,9 +178,15 @@ def main():
                 ):
                     if chunk:
                         full_response += chunk
+                        # Apply RTL styling to the live output
                         result_placeholder.markdown(
-                            full_response
-                        )  # به‌روزرسانی خروجی به صورت زنده
+                            f"""
+                            <div style="direction: rtl; text-align: right; font-size: 18px;">
+                                {full_response}
+                            </div>
+                            """,
+                            unsafe_allow_html=True,
+                        )  # Update the output live
 
                 st.success("Analysis Complete!")
 
