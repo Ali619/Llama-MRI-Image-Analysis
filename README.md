@@ -1,12 +1,57 @@
-**Step 1: Analyze the Image**
+## How to setup
 
-The provided image is an MRI (Magnetic Resonance Imaging) scan of a vertebral column, likely taken to investigate spinal cord or nerve root issues.
+Run:
 
-**Step 2: Identify Anomalies and Potential Diagnoses**
+1. `git clone https://github.com/Ali619/Llama-MRI-Image-Analysis.git`
+2. `pip install -r requirements.txt`
 
-*   **Lumbar Vertebrae**: The lumbar vertebrae exhibit widening, suggesting potential spondylolisthesis, where one vertebra slips forward over another.
-*   **Spinal Cord Contour**: The contour of the spinal cord appears abnormal. This could be due to inflammation or compression by a tumor or cyst.
+## How to use
+If you encounter an SSL error:
+Make sure that the cert.pem and key.pem files required for HTTPS are in the correct path. If needed, you can generate a temporary certificate by running the following command:
 
-**Step 3: Conclusion**
+```bash
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes
+```
 
-The MRI reveals an abnormality in the lumbar spine and potential pressure on the spinal cord from either a tumor, cyst, or other pathology causing nerve root impingement or compression.
+Once implemented, you can test the API by opening a browser and entering the following address:
+```bash
+https://localhost:5000/analyze
+```
+
+Using curl on the command line: 
+
+```bash
+curl -X POST -F "file=@your_image.dcm" -F "analysis_type=General Description" https://localhost:5000/analyze --insecure
+```
+---
+### Explanation:
+
+* `-X POST` → Send POST request
+
+* `-F "file=@your_image.dcm"` → Upload MRI file (replace your_image.dcm with your own file)
+
+* `-F "analysis_type=General Description"` → Analysis type
+
+* `--insecure` → To ignore SSL in test certificates
+
+### Using Postman:
+
+* Create a new `POST` request.
+* In the URL field, enter this: `https://localhost:5000/analyze`
+
+* Go to the Body tab and select the form-data option. Add two fields:
+    * `Key file` → Type File and select an MRI file.
+    * `Key analysis_type` → Value General Description (or other analysis type)
+* Click Send.
+
+### Using a Python script:
+```python import requests
+url = "https://localhost:5000/analyze"
+files = {"file": open("your_image.dcm", "rb")}
+data = {"analysis_type": "General Description"}
+response = requests.post(url, files=files, data=data, verify=False)
+print(response.json())
+```
+Make sure:
+* The path to `your_image.dcm` is correct.
+* `verify=False` is used to bypass temporary SSL.
